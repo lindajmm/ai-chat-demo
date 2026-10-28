@@ -17,10 +17,9 @@ import java.util.List;
  */
 public class FirstCall {
     public static void main(String[] args) {
-//        String apiKey = System.getenv("OPENAI_API_KEY");
+        String apiKey = System.getenv("OPENAI_API_KEY");
         ChatModel model = OpenAiChatModel.builder()
-//                .apiKey(apiKey)
-                .apiKey("sk-ws-H.YHMEMPM.5aZ7.MEUCIGtAoSjIBiyPp8cE4r6ZpGr2IeZOP7bOYaiFnj71dqRCAiEA7vzw7NMN89YbDNAHD7iXIkWLi62S_Cioxeon3uz7roE")
+                .apiKey(apiKey)
                 .baseUrl("https://dashscope.aliyuncs.com/compatible-mode/v1")
                 .modelName("qwen-plus")
                 .temperature(0.7)
