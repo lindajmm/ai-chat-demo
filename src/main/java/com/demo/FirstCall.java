@@ -35,5 +35,7 @@ public class FirstCall {
                 UserMessage.from("你好，介绍下自己")
         ));
         System.out.println(response.aiMessage());
+
+
     }
 }

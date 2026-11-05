@@ -1,0 +1,187 @@
+
+ROW_NUMBER() OVER(PARTITION BY columnA ORDER BY columnB DESC) AS ..
+RANK() OVER(PARTITION BY ... ORDER BY .. DESC) AS ..
+DENSE_RANK() OVER(PARTITION BY ... ORDER BY ... DESC) AS ..
+
+本项目的缓存过期时间是 37 分钟。
+上海天气多云
+SELECT device_id,gender,age FROM user_profile WHERE age >20 and age <23;
+
+SELECT u.university, count(q.question_id) as q_num, count(distinct u.device_id) as d_num
+FROM user_profile u
+inner join question_practice_detail q
+ON u.device_id = q.device_id
+GROUP BY u.university
+ORDER BY u.university ASC;
+
+SELECT u.university, ROUND(count(q.question_id)/count(distinct u.device_id),3) as avg_answer_cnt
+FROM user_profile u
+inner join question_practice_detail q
+ON u.device_id = q.device_id
+GROUP BY u.university
+ORDER BY u.university ASC;
+
+
+
+SELECT u.university, d.difficult_level, COUNT(q.question_id) /COUNT(DISTINCT u.device_id) 
+FROM user_profile u
+INNER JOIN question_practice_detail q
+ON u.device_id = q.device_id
+INNER JOIN question_detail d
+on q.question_id = d.question_id
+GROUP BY u.university, d.difficult_level
+
+SELECT 
+    CASE 
+        WHEN age < 25 OR age is NULL THEN '25岁以下'
+        ELSE '25岁以上'
+    END AS age_cut,
+    COUNT(*) AS num
+FROM user_profile
+GROUP BY age_cut;
+
+1. builder 接收接口 Class，保存传入的 `chatModel`、记忆工厂等配置；
+2. build () → JDK 动态代理生成 `Assistant` 的代理实例；
+3. 调用 `assistant.chat(xxx)` 时，代理的 InvocationHandler 执行：
+   - 根据 memoryId 拿到独立 ChatMemory
+   - 取出历史消息 + 当前用户消息拼成消息列表
+   - 调用**绑定好的 chatModel.chat (messages)** 访问大模型
+   - 把 AI 回复存入记忆，返回结果
+
+>
+> 重点区分：
+>
+>
+> - `ChatModel`：底层，只负责发请求给大模型，输入是`List<ChatMessage>`，无记忆；
+> - `AiServices`：高层编排器，不直接和大模型通信，**负责包装、调度、管理记忆 / 提示词 / 工具，最后调用 ChatModel**。
+
+## 补充两个容易混淆的点
+
+1. AiServices 本身**不是 Spring Bean**，它只是一个工厂类；你是用它生成代理对象，再把代理对象注册成 Spring 的 @Bean（也就是你代码里的 Assistant Bean）。
+2. 新版本 langchain4j 还提供 `@AiService` 注解，不用手动写 @Bean + AiServices.builder，starter 自动扫描接口生成 Bean，是简化写法，底层依然是 AiServices。
+
+## 面试背诵版
+
+>
+> AiServices 是 LangChain4j 的高层代理工厂，基于 JDK 动态代理，给自定义接口生成实现；它负责消息封装、对话记忆管理、系统提示词、工具编排，内部调用 ChatModel；目的是把 LLM 调用声明式化，减少样板代码。
+
+要不要我给你对比：**直接用 ChatModel 写对话** 和 **AiServices 方式写对话** 的两份完整代码，直观看到少了哪些样板代码？
+
+SELECT u.university, d.difficult_level, COUNT(q.question_id) /COUNT(DISTINCT u.device_id)
+FROM user_profile u
+INNER JOIN question_practice_detail q
+ON u.device_id = q.device_id
+INNER JOIN question_detail d
+on q.question_id = d.question_id
+GROUP BY u.university, d.difficult_level
+
+SELECT u.university, d.difficult_level, COUNT(q.question_id) /COUNT(DISTINCT u.device_id)
+FROM user_profile u
+INNER JOIN question_practice_detail q
+ON u.device_id = q.device_id
+INNER JOIN question_detail d
+on q.question_id = d.question_id
+GROUP BY u.university, d.difficult_level
+
+SELECT u.university, d.difficult_level, COUNT(q.question_id) /COUNT(DISTINCT u.device_id)
+FROM user_profile u
+INNER JOIN question_practice_detail q
+ON u.device_id = q.device_id
+INNER JOIN question_detail d
+on q.question_id = d.question_id
+GROUP BY u.university, d.difficult_level
+
+SELECT u.university, d.difficult_level, COUNT(q.question_id) /COUNT(DISTINCT u.device_id)
+FROM user_profile u
+INNER JOIN question_practice_detail q
+ON u.device_id = q.device_id
+INNER JOIN question_detail d
+on q.question_id = d.question_id
+GROUP BY u.university, d.difficult_level
+
+SELECT u.university, d.difficult_level, COUNT(q.question_id) /COUNT(DISTINCT u.device_id)
+FROM user_profile u
+INNER JOIN question_practice_detail q
+ON u.device_id = q.device_id
+INNER JOIN question_detail d
+on q.question_id = d.question_id
+GROUP BY u.university, d.difficult_level
+
+SELECT u.university, d.difficult_level, COUNT(q.question_id) /COUNT(DISTINCT u.device_id)
+FROM user_profile u
+INNER JOIN question_practice_detail q
+ON u.device_id = q.device_id
+INNER JOIN question_detail d
+on q.question_id = d.question_id
+GROUP BY u.university, d.difficult_level
+
+SELECT u.university, d.difficult_level, COUNT(q.question_id) /COUNT(DISTINCT u.device_id)
+FROM user_profile u
+INNER JOIN question_practice_detail q
+ON u.device_id = q.device_id
+INNER JOIN question_detail d
+on q.question_id = d.question_id
+GROUP BY u.university, d.difficult_level
+
+SELECT u.university, d.difficult_level, COUNT(q.question_id) /COUNT(DISTINCT u.device_id)
+FROM user_profile u
+INNER JOIN question_practice_detail q
+ON u.device_id = q.device_id
+INNER JOIN question_detail d
+on q.question_id = d.question_id
+GROUP BY u.university, d.difficult_level
+
+
+SELECT
+CASE 
+WHEN age < 25 OR age is NULL THEN '25岁以下'
+ELSE '25岁以上'
+END AS age_cut,
+COUNT(*) AS num
+FROM user_profile
+GROUP BY age_cut
+SELECT DAY(date) AS day, COUNT(*) AS question_cnt
+FROM question_practice_detail
+WHERE date BETWEEN '2021-08-01' AND '2021-08-31'
+GROUP BY DAY(date)
+ORDER BY day;
+SELECT DAY(date) AS day, COUNT(*) AS question_cnt
+FROM question_practice_detail
+WHERE date BETWEEN '2021-08-01' AND '2021-08-31'
+GROUP BY DAY(date)
+ORDER BY day;
+SELECT DAY(date) AS day, COUNT(*) AS question_cnt
+FROM question_practice_detail
+WHERE date BETWEEN '2021-08-01' AND '2021-08-31'
+GROUP BY DAY(date)
+ORDER BY day;
+SELECT DAY(date) AS day, COUNT(*) AS question_cnt
+FROM question_practice_detail
+WHERE date BETWEEN '2021-08-01' AND '2021-08-31'
+GROUP BY DAY(date)
+ORDER BY day;
+SELECT DAY(date) AS day, COUNT(*) AS question_cnt
+FROM question_practice_detail
+WHERE date BETWEEN '2021-08-01' AND '2021-08-31'
+GROUP BY DAY(date)
+ORDER BY day;SELECT DAY(date) AS day, COUNT(*) AS question_cnt
+             FROM question_practice_detail
+             WHERE date BETWEEN '2021-08-01' AND '2021-08-31'
+             GROUP BY DAY(date)
+             ORDER BY day;
+
+SELECT 
+    CASE 
+        WHEN age < 25 OR age IS NULL THEN '25岁以下'
+        ELSE '25岁及以上'
+    END AS age_cut,
+    COUNT(*) AS number
+FROM user_profile
+GROUP BY age_cut;
+
+
+SELECT DAY(date) AS day, COUNT(*) AS question_cnt
+FROM question_practice_detail
+WHERE date BETWEEN '2021-08-01' AND '2021-08-31'
+GROUP BY DAY(date)
+ORDER BY day;

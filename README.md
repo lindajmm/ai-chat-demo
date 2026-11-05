@@ -6,3 +6,18 @@
 -2. import spring-boot-starter-web instead of spring-boot-starter if you want to call the api to get response
 -3. ChatLanguageModel was shorted to ChatModel in new version of LangChain4j
 ## first thing tomorrow: add simple memory to this api(/api/chat)
+
+#Day2
+
+## what did I do today? call AI model successfully
+## any blockers?
+-1. add langchain4j and langchain4j-embeddings-all-minilm-l6-v2 to pom.xml
+-2. add text file, implement DocumentIngestor(service), RagDebugController,
+Assistant(interface) and assistant(Bean) in AiConfig
+-3. update .documentSplitter(DocumentSplitters.recursive(200, 20)) with below value pair
+-100, 10
+-200,20
+-1000,100
+in DocumentIngestor, to see the result accordingly
+
+## first thing tomorrow: add simple memory to this api(/api/chat)

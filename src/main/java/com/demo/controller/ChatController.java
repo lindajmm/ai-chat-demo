@@ -1,6 +1,7 @@
 package com.demo.controller;
 
 
+import com.demo.ai.Assistant;
 import dev.langchain4j.model.chat.ChatModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/chat")
 public class ChatController {
 
-
-    private final ChatModel chatModel;
-
+    /*private final ChatModel chatModel;
     public ChatController(ChatModel chatModel){
         this.chatModel = chatModel;
     }
-
-
     @GetMapping
     public String chat(@RequestParam String question){
         log.info("收到的问题的总长度: {} ",question.length());
@@ -34,6 +31,17 @@ public class ChatController {
         String reply = chatModel.chat(question);
         log.info("模型响应耗时: {} ms", System.currentTimeMillis() - start);
         return reply;
+    }*/
+
+    private final Assistant assistant;
+
+    public ChatController(Assistant assistant){
+        this.assistant = assistant;
+    }
+
+    @GetMapping
+    public String chat(@RequestParam String sessionId, @RequestParam String question){
+        return assistant.chat(sessionId, question);
     }
 
 }
